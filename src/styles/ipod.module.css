@@ -1,6 +1,87 @@
-.ipod{
+.ipod-body{
+    height:470px;
+    width:270px;
+    border-radius:22px;
+    background-image: linear-gradient(30deg,rgb(31, 37, 41),rgb(34, 43, 48));
     position:absolute;
+    right:50%;
     bottom:50%;
+    transform:translate(50%, 50%);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 
+    -10px -10px 20px rgba(255, 255, 255, 0.05), /* outer white */
+    10px 10px 20px rgba(0, 0, 0, 0.5), /* outer black */
+    inset 10px 10px 10px rgb(75, 84, 92), /* inner dark */
+    inset -10px -10px 20px rgba(255,255,255,0.05); /* inner light */
+}
+body{
+    padding: 0;
+    margin: 0;
+    height:100%;
+    background-color: rgb(31, 37, 41); /*grey*/
+}
+header{
+    height:209px;
+    display:flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding:1rem 1rem 0rem 1rem;
+}
+.screen{
+    background-color: black;
+    height:100%;
+    width:100%;
+    border-radius: 5px;
+}
+footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    width:100%;
+    position:relative;
+}
+.nav-circle{
+    box-sizing: border-box;
+    border: 55px solid rgb(75, 84, 92); /* rgb(95, 98, 99); */
+    height:170px;
+    width:170px;
+    border-radius: 50%;
+    filter: drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.5));
+}
+
+.button{
+    position:absolute;
+    color:rgb(244, 244, 231);
+}
+
+.menu-button{
+    top: 0;
     left:50%;
-    transform:translate(50%,50%);
+    transform: translateX(-50%);
+    margin-top:45px;
+    font-size:14px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+.forward-button{
+    top:50%;
+    margin-right:60px;
+    right:0;
+    transform:translateY(-50%);
+}
+.previous-button{
+    top:50%;
+    margin-left:60px;
+    left:0;
+    transform:translateY(-50%);
+}
+.play-pause-button{
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    margin-bottom:45px;
+}
+.fa-caret-right{
+    margin-right:5px;
 }
