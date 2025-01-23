@@ -14,33 +14,33 @@ export default class HomeScreen extends React.Component {
     }
     render(){
         return(<>
-        <div class={styles.screen}>
-            <section class={styles.right}>
-                <div class={styles.header}>
+        <div className={styles.screen}>
+            <section className={styles.right}>
+                <div className={styles.header}>
                     <span>iPod</span>
-                    <div class={styles.battery}>
-                        <div class={styles['battery-main']}></div>
-                        <div class={styles['battery-cap']}></div>
+                    <div className={styles.battery}>
+                        <div className={styles['battery-main']}></div>
+                        <div className={styles['battery-cap']}></div>
                     </div>
                 </div>
-                <div class={styles.body}>
-                    <div class={`${styles.option} ${styles.selected}`}>
+                <div className={styles.body}>
+                    <div className={`${styles.option} ${styles.selected}`}>
                         <span>Cover flow</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div class={styles.option}>
+                    <div className={styles.option}>
                         <span>Music</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div class={styles.option}>
+                    <div className={styles.option}>
                         <span>Games</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div class={styles.option}>
+                    <div className={styles.option}>
                         <span>Settings</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div class={styles.option}>
+                    <div className={styles.option}>
                         <span>Sign In</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
