@@ -1,20 +1,23 @@
 import React from 'react';
 import styles from '../styles/ipod.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' // NOTE this is how you import the icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // NOTE this is how you import the icons
 import { faPlay, faPause, faForward, faBackward, faBars } from '@fortawesome/free-solid-svg-icons';
 
-import Screen from './screen';
+import HomeScreen from './HomeScreen';
 export default class Ipod extends React.Component {
     constructor(props){
         super(props);
-        this.state = {};
+        this.screens = ['HomeScreen'];
+        this.state = {
+            currentScreen: this.screens[0]
+        };
     }
     render(){
         return (
             <div className={styles["ipod-body"]}>
                 <header>
                     <div className={styles.screen}>
-                        <Screen/>
+                        <HomeScreen/>
                     </div>
                 </header>
                 <footer>
