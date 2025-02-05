@@ -7,9 +7,8 @@ import styles from '../styles/screen.module.css';
 export default class HomeScreen extends React.Component {
     constructor(props){
         super(props);
-        this.options=['CoverFlow','Music','Games','Settings','Sign In'];
         this.state = {
-            currentFocus : this.options[0]
+            currentFocus : props.optionHighlighted
         };
     }
     render(){
@@ -24,23 +23,23 @@ export default class HomeScreen extends React.Component {
                     </div>
                 </div>
                 <div className={styles.body}>
-                    <div className={`${styles.option} ${styles.selected}`}>
+                    <div className={this.state.currentFocus=='coverflow'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
                         <span>Cover flow</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div className={styles.option}>
+                    <div className={this.state.currentFocus=='music'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
                         <span>Music</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div className={styles.option}>
+                    <div className={this.state.currentFocus=='games'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
                         <span>Games</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div className={styles.option}>
+                    <div className={this.state.currentFocus=='settings'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
                         <span>Settings</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div className={styles.option}>
+                    <div className={this.state.currentFocus=='signin'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
                         <span>Sign In</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>

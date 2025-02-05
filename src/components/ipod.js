@@ -7,22 +7,23 @@ import HomeScreen from './HomeScreen';
 export default class Ipod extends React.Component {
     constructor(props){
         super(props);
-        this.screens = ['HomeScreen'];
-        this.state = {
-            currentScreen: this.screens[0]
-        };
+        this.wheelRef = React.createRef();
+        this.homeScreenOptions = ['coverflow','music','games','settings','signin'];
 
-        this.wheelRef = React.createRef(); // NOTE : this is how you access elements from DOM
-        this.wheelCenterX = null;
-        this.wheelCenterY = null;
+        this.wheelCenterX = 0;
+        this.wheelCenterY = 0;
 
-        this.mouseX = null; // Position of the mouse when hovering on the wheel
-        this.mouseY = null;
-
+        this.angle = 0; // the option is highlighted with respect to this variable
         this.mouseDown = false;
+        this.mouseStartX = null;
+        this.mouseStartY = null;
+
+        this.state = {
+            homeScreenOptionHighlighted : this.homeScreenOptions[0]
+        }
     }
 
-    calculateWheelCenter = ()=>{
+    calculateWheelCenter = ()=>{ // this is called after the component mounts and everytime the width of the viewport changes
         let wheel = this.wheelRef.current;
         let wheelBoundingRectangle = wheel.getBoundingClientRect();
 
@@ -30,46 +31,57 @@ export default class Ipod extends React.Component {
         this.wheelCenterY = wheelBoundingRectangle.top + (wheelBoundingRectangle.height / 2);
     }
     handleMouseDown =(e)=>{
-        this.mouseDown = true; console.log('mouse down');
+        this.mouseDown = true; console.log('Mouse Down');
+        this.mouseStartX = e.clientX;
+        this.mouseStartY = e.clientY;
     }
     handleScroll = (e)=>{
         if(this.mouseDown){
-            let currentX = e.clientX;
-            let currentY = e.clientY;
+            let mouseStartX = this.mouseStartX, mouseStartY = this.mouseStartY;
+            if(mouseStartX && mouseStartY){
+                let currentX = e.clientX, currentY = e.clientY;
+                let cX = this.wheelCenterX, cY = this.wheelCenterY;
+                let angle1 = Math.atan2(currentY-cY,currentX-cX);
+                let angle2 = Math.atan2(mouseStartY-cY,mouseStartX-cX);
+                let angleMade = (angle1-angle2)*(360/(2*Math.PI)); // calculte the angle made at the center in degrees
 
-            if(this.mouseX&&this.mouseY){
-                let dy = currentY - this.mouseY;
-                let dx = currentX - this.mouseX; console.log('change in mouse',dx,dy);
-                let angleInRadians = Math.atan2(dy,dx);
-                let angleInDegrees = (angleInRadians * 360) / (2 * Math.PI);
-                this.mouseX = currentX;
-                this.mouseY = currentY;
+                if (angleMade > 180) { // as the atan2 function return values in the range (-180,180], these calculations make sure the edge case where the pointer is initially in the 3rd quadrant and finally in the second is handled properly
+                    angleMade -= 360;
+                } else if (angleMade < -180) {
+                    angleMade += 360;
+                }
+
+                this.angle += angleMade;
+                this.mouseStartX = currentX;
+                this.mouseStartY = currentY;
+                console.log('angle',this.angle);
             } else {
-                this.mouseX = currentX;
-                this.mouseY = currentY;
+                this.mouseStartX = e.clientX;
+                this.mouseStartY = e.clientY;
             }
         }
     }
     handleMouseUp = (e)=>{
         this.mouseDown = false; console.log('Mouse Up');
+        this.mouseStartX = null;
+        this.mouseStartY = null;
     }
-    handleMouseLeave = (e)=>{
-        this.mouseDown = false; console.log('Mouse Leave');
+    handleMouseLeave = (e)=>{console.log('Mouse Leave');
     }
     render(){
         return (
             <div className={styles["ipod-body"]}>
                 <header>
                     <div className={styles.screen}>
-                        <HomeScreen/>
+                        <HomeScreen optionHighlighted={this.state.homeScreenOptionHighlighted}/>
                     </div>
                 </header>
                 <footer>
                     <div ref={this.wheelRef} className={styles["nav-circle"]} onMouseDown={this.handleMouseDown} onMouseMove={this.handleScroll} onMouseUp={this.handleMouseUp} onMouseLeave={this.handleMouseLeave}></div>
-                    <div id="menu-button" className={`${styles.button} ${styles['menu-button']}`}>MENU</div>
+                    {/* <div id="menu-button" className={`${styles.button} ${styles['menu-button']}`}>MENU</div>
                     <div id="forward-button" className={`${styles.button} ${styles['forward-button']}`}><FontAwesomeIcon icon={faForward}/></div>
                     <div id="play-pause-button" className={`${styles.button} ${styles['play-pause-button']}`}><FontAwesomeIcon icon={faPlay} style={{marginRight:"5px", transform:"scale(0.9)"}}/><FontAwesomeIcon icon={faPause}/></div>
-                    <div id="previous-button" className={`${styles.button} ${styles['previous-button']}`}><FontAwesomeIcon icon={faBackward}/></div>
+                    <div id="previous-button" className={`${styles.button} ${styles['previous-button']}`}><FontAwesomeIcon icon={faBackward}/></div> */}
                 </footer>
             </div>
         )
