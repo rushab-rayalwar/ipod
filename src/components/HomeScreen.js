@@ -5,12 +5,7 @@ import styles from '../styles/screen.module.css';
 
 
 export default class HomeScreen extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            currentFocus : props.optionHighlighted
-        };
-    }
+
     render(){
         return(<>
         <div className={styles.screen}>
@@ -23,23 +18,23 @@ export default class HomeScreen extends React.Component {
                     </div>
                 </div>
                 <div className={styles.body}>
-                    <div className={this.state.currentFocus=='coverflow'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
+                    <div className={this.props.optionHighlighted=='coverflow'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
                         <span>Cover flow</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div className={this.state.currentFocus=='music'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
+                    <div className={this.props.optionHighlighted=='music'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
                         <span>Music</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div className={this.state.currentFocus=='games'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
+                    <div className={this.props.optionHighlighted=='games'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
                         <span>Games</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div className={this.state.currentFocus=='settings'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
+                    <div className={this.props.optionHighlighted=='settings'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
                         <span>Settings</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div className={this.state.currentFocus=='signin'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
+                    <div className={this.props.optionHighlighted=='signin'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
                         <span>Sign In</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>

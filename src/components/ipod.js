@@ -45,13 +45,22 @@ export default class Ipod extends React.Component {
                 let angle2 = Math.atan2(mouseStartY-cY,mouseStartX-cX);
                 let angleMade = (angle1-angle2)*(360/(2*Math.PI)); // calculte the angle made at the center in degrees
 
-                if (angleMade > 180) { // as the atan2 function return values in the range (-180,180], these calculations make sure the edge case where the pointer is initially in the 3rd quadrant and finally in the second is handled properly
+                if (angleMade > 180) { // as the atan2 function return values in the range (-180,180], these calculations make sure that the edge case where the pointer is initially in the 3rd quadrant and finally in the second is handled properly avoiding unexpected jumps by essentially calculating the shortest angle
                     angleMade -= 360;
                 } else if (angleMade < -180) {
                     angleMade += 360;
                 }
 
                 this.angle += angleMade;
+    
+                let indexToBeHighlighted = (Math.floor(((this.angle % 135) / 135) * (this.homeScreenOptions.length))) ;
+                if(indexToBeHighlighted < 0) {
+                    indexToBeHighlighted += this.homeScreenOptions.length;
+                }
+                this.setState(()=>({
+                    homeScreenOptionHighlighted: this.homeScreenOptions[indexToBeHighlighted]
+                }));
+
                 this.mouseStartX = currentX;
                 this.mouseStartY = currentY;
                 console.log('angle',this.angle);
@@ -66,7 +75,8 @@ export default class Ipod extends React.Component {
         this.mouseStartX = null;
         this.mouseStartY = null;
     }
-    handleMouseLeave = (e)=>{console.log('Mouse Leave');
+    handleMouseOut = (e)=>{console.log('Mouse Out');
+        this.mouseDown = false;
     }
     render(){
         return (
@@ -77,11 +87,11 @@ export default class Ipod extends React.Component {
                     </div>
                 </header>
                 <footer>
-                    <div ref={this.wheelRef} className={styles["nav-circle"]} onMouseDown={this.handleMouseDown} onMouseMove={this.handleScroll} onMouseUp={this.handleMouseUp} onMouseLeave={this.handleMouseLeave}></div>
-                    {/* <div id="menu-button" className={`${styles.button} ${styles['menu-button']}`}>MENU</div>
+                    <div ref={this.wheelRef} className={styles["nav-circle"]} onMouseDown={this.handleMouseDown} onMouseMove={this.handleScroll} onMouseUp={this.handleMouseUp} onMouseOut={this.handleMouseLeave}></div>
+                    <div id="menu-button" className={`${styles.button} ${styles['menu-button']}`}>MENU</div>
                     <div id="forward-button" className={`${styles.button} ${styles['forward-button']}`}><FontAwesomeIcon icon={faForward}/></div>
                     <div id="play-pause-button" className={`${styles.button} ${styles['play-pause-button']}`}><FontAwesomeIcon icon={faPlay} style={{marginRight:"5px", transform:"scale(0.9)"}}/><FontAwesomeIcon icon={faPause}/></div>
-                    <div id="previous-button" className={`${styles.button} ${styles['previous-button']}`}><FontAwesomeIcon icon={faBackward}/></div> */}
+                    <div id="previous-button" className={`${styles.button} ${styles['previous-button']}`}><FontAwesomeIcon icon={faBackward}/></div>
                 </footer>
             </div>
         )

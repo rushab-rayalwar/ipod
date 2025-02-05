@@ -1,3 +1,5 @@
-1. implementing the scroll feature
+1. implementing the scroll feature - the logic
 2. mouseDown = false when the mouse is still clicked but
 hovers over the button icons
+-> solution : I was using 'onMouseLeave'event but, the problem
+was fixed on using the 'onMousOut' event
