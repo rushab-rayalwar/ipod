@@ -54,6 +54,7 @@ footer{
 .button{
     position:absolute;
     color:rgb(244, 244, 231);
+    padding : 0.5rem;
 }
 
 .menu-button{
