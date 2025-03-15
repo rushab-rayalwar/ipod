@@ -7,25 +7,45 @@ export default class Ipod extends React.Component {
     constructor(props){
         super(props);
         this.wheelRef = React.createRef();
-        this.homeScreenOptions = ['music','photos','videos','settings','about'];
-        this.screens = ['home','music','photos','videos','settings','about']
 
         this.wheelCenterX = 0;
         this.wheelCenterY = 0;
 
-        this.angle = 0; // the option is highlighted with respect to this variable
+        this.angle = 0; // the option on a screen is highlighted with respect to this variable
+
+        this.homeScreenOptions = ['music','photos','videos','settings','about'];
+        this.musicScreenOptions = ['shuffle','allSongs','albums','artists'];
+        this.screens = ['home','music','photos','videos','settings','about'];
+        this.currentOptions = this.homeScreenOptions;
+
         this.mouseDown = false;
         this.mouseStartX = null;
         this.mouseStartY = null;
 
         this.state = {
-            homeScreenOptionHighlighted : this.homeScreenOptions[0],
-            currentPage : 'home'
+            optionHighlighted : this.currentOptions[0],
+            currentScreen : 'home'
         }
+       
     }
-
+    
+    handleMiddleButtonClick = (e)=>{
+        console.log("Middle Button Clicked");
+        switch(this.state.optionHighlighted) {
+            case "home":
+                this.currentOptions = this.homeScreenOptions;
+                break;
+            case "music":
+                this.currentOptions = this.musicScreenOptions
+        }
+        this.setState((prevState)=>({
+            currentScreen :  prevState.optionHighlighted,
+            optionHighlighted : this.currentOptions[0]
+        })) ;
+    }
     calculateWheelCenter = ()=>{ // this is called after the component mounts and everytime the width of the viewport changes
         let wheel = this.wheelRef.current;
+        if(!wheel) return; // this statement prevents unnecesaary crash that could occur if the reference is accessed before it is rendered
         let wheelBoundingRectangle = wheel.getBoundingClientRect();
 
         this.wheelCenterX = wheelBoundingRectangle.left + ( wheelBoundingRectangle.width / 2);
@@ -35,6 +55,21 @@ export default class Ipod extends React.Component {
         this.mouseDown = true; console.log('Mouse Down');
         this.mouseStartX = e.clientX;
         this.mouseStartY = e.clientY;
+    }
+    handleMouseUp = (e)=>{
+        this.mouseDown = false; console.log('Mouse Up');
+        this.mouseStartX = null;
+        this.mouseStartY = null;
+    }
+    handleMouseLeave = (e)=>{
+        // Check if the new element (relatedTarget) is still inside the wheel
+        if (this.wheelRef.current && e.relatedTarget && this.wheelRef.current.contains(e.relatedTarget)) {
+            return; // Do nothing because the mouse is still over a child of the wheel
+        }
+        console.log('Mouse Leave');
+        this.mouseDown = false;
+        this.mouseStartX = null;
+        this.mouseStartY = null;
     }
     handleScroll = (e)=>{
         if(this.mouseDown){
@@ -52,14 +87,17 @@ export default class Ipod extends React.Component {
                     angleMade += 360;
                 }
 
+                this.setState((prevState)=>({
+                    angle: prevState.angle + angleMade
+                }))
                 this.angle += angleMade;
     
-                let indexToBeHighlighted = (Math.floor(((this.angle % 135) / 135) * (this.homeScreenOptions.length))) ;
+                let indexToBeHighlighted = (Math.floor(((this.angle % 135) / 135) * (this.currentOptions.length))) ;
                 if(indexToBeHighlighted < 0) {
-                    indexToBeHighlighted += this.homeScreenOptions.length;
+                    indexToBeHighlighted += this.currentOptions.length;
                 }
                 this.setState(()=>({
-                    homeScreenOptionHighlighted: this.homeScreenOptions[indexToBeHighlighted]
+                    optionHighlighted: this.currentOptions[indexToBeHighlighted]
                 }));
 
                 this.mouseStartX = currentX;
@@ -71,38 +109,22 @@ export default class Ipod extends React.Component {
             }
         }
     }
-    handleMouseUp = (e)=>{
-        this.mouseDown = false; console.log('Mouse Up');
-        this.mouseStartX = null;
-        this.mouseStartY = null;
-    }
-    handleMouseOut = (e)=>{console.log('Mouse Out');
-        this.mouseDown = false;
-    }
-    switchScreen = (screen)=> {
-
-    }
-    // button event handlers
-    handleMenuClick(e){
-        this.setState((prevState)=>({
-            currentPage : prevState.homeScreenOptions
-        }))
-    }
-
     render(){
         return (
             <div className={styles["ipod-body"]}>
                 <header>
                     <div className={styles.screen}>
-                        <Screen optionHighlighted={this.state.homeScreenOptionHighlighted} currentPage={this.state.currentPage}/>
+                        <Screen optionHighlighted = {this.state.optionHighlighted} currentScreen={this.state.currentScreen}/>
                     </div>
                 </header>
                 <footer>
-                    <div ref={this.wheelRef} className={styles["nav-circle"]} onMouseDown={this.handleMouseDown} onMouseMove={this.handleScroll} onMouseUp={this.handleMouseUp} onMouseOut={this.handleMouseLeave}></div>
-                    <div id="menu-button" onClick={this.handleMenuClick} className={`${styles.button} ${styles['menu-button']}`}>MENU</div>
-                    <div id="forward-button" className={`${styles.button} ${styles['forward-button']}`}><FontAwesomeIcon icon={faForward}/></div>
-                    <div id="play-pause-button" className={`${styles.button} ${styles['play-pause-button']}`}><FontAwesomeIcon icon={faPlay} style={{marginRight:"5px", transform:"scale(0.9)"}}/><FontAwesomeIcon icon={faPause}/></div>
-                    <div id="previous-button" className={`${styles.button} ${styles['previous-button']}`}><FontAwesomeIcon icon={faBackward}/></div>
+                    <div ref={this.wheelRef} className={styles["nav-circle"]} onMouseDown={this.handleMouseDown} onMouseMove={this.handleScroll} onMouseUp={this.handleMouseUp} onMouseOut={this.handleMouseLeave}>
+                        <div className={styles["middle-button-transparent"]} onClick = {this.handleMiddleButtonClick} ></div>
+                        <div id="menu-button" className={`${styles.button} ${styles['menu-button']}`}>MENU</div>
+                        <div id="forward-button" className={`${styles.button} ${styles['forward-button']}`}><FontAwesomeIcon icon={faForward}/></div>
+                        <div id="play-pause-button" className={`${styles.button} ${styles['play-pause-button']}`}><FontAwesomeIcon icon={faPlay} style={{marginRight:"5px", transform:"scale(0.9)"}}/><FontAwesomeIcon icon={faPause}/></div>
+                        <div id="previous-button" className={`${styles.button} ${styles['previous-button']}`}><FontAwesomeIcon icon={faBackward}/></div>
+                    </div>
                 </footer>
             </div>
         )
