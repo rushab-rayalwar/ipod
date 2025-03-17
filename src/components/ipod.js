@@ -27,6 +27,7 @@ export default class Ipod extends React.Component {
             currentScreen : 'home'
         }
        
+        this.lastVisited = ""
     }
     
     handleMiddleButtonClick = (e)=>{
@@ -109,18 +110,33 @@ export default class Ipod extends React.Component {
             }
         }
     }
+    updateLastVisited = (lastvisited)=>{
+        this.lastVisited = lastvisited;
+        
+    }
+    handleMenuButtonClick = (e)=>{
+        if(this.lastVisited == ""){
+            return ;
+        } else {
+            this.currentOptions = this.homeScreenOptions;
+            this.setState((prevState)=>({
+                currentScreen: this.lastVisited,
+                optionHighlighted : this.currentOptions[0]
+            }));
+        }
+    }
     render(){
         return (
             <div className={styles["ipod-body"]}>
                 <header>
                     <div className={styles.screen}>
-                        <Screen optionHighlighted = {this.state.optionHighlighted} currentScreen={this.state.currentScreen}/>
+                        <Screen optionHighlighted = {this.state.optionHighlighted} currentScreen={this.state.currentScreen} updateLastVisited={this.updateLastVisited}/>
                     </div>
                 </header>
                 <footer>
                     <div ref={this.wheelRef} className={styles["nav-circle"]} onMouseDown={this.handleMouseDown} onMouseMove={this.handleScroll} onMouseUp={this.handleMouseUp} onMouseOut={this.handleMouseLeave}>
                         <div className={styles["middle-button-transparent"]} onClick = {this.handleMiddleButtonClick} ></div>
-                        <div id="menu-button" className={`${styles.button} ${styles['menu-button']}`}>MENU</div>
+                        <div id="menu-button" className={`${styles.button} ${styles['menu-button']}`} onClick={this.handleMenuButtonClick}>MENU</div>
                         <div id="forward-button" className={`${styles.button} ${styles['forward-button']}`}><FontAwesomeIcon icon={faForward}/></div>
                         <div id="play-pause-button" className={`${styles.button} ${styles['play-pause-button']}`}><FontAwesomeIcon icon={faPlay} style={{marginRight:"5px", transform:"scale(0.9)"}}/><FontAwesomeIcon icon={faPause}/></div>
                         <div id="previous-button" className={`${styles.button} ${styles['previous-button']}`}><FontAwesomeIcon icon={faBackward}/></div>

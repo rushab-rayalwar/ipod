@@ -1,10 +1,10 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import styles from '../styles/page.module.css';
+import styles from '../../styles/page.module.css';
 
 
-export default class MusicScreen extends React.Component {
+export default class HomeScreen extends React.Component {
     constructor(props){
         super(props);
         this.rightSection = React.createRef();
@@ -13,7 +13,7 @@ export default class MusicScreen extends React.Component {
     render(){
         return(<>
         <div className={styles.screen}>
-            <section className={styles.right} ref={this.rightSection}>  
+            <section className={styles.right} ref={this.rightSection}>
                 <div className={styles.header}>
                     <span>iPod</span>
                     <div className={styles.battery}>
@@ -22,20 +22,24 @@ export default class MusicScreen extends React.Component {
                     </div>
                 </div>
                 <div className={styles.body}>
-                    <div className={this.props.optionHighlighted=='shuffle'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
-                        <span>Shuffle</span>
+                    <div className={this.props.optionHighlighted=='music'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
+                        <span>Music</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div className={this.props.optionHighlighted=='allSongs'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
-                        <span>All Songs</span>
+                    <div className={this.props.optionHighlighted=='photos'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
+                        <span>Photos</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div className={this.props.optionHighlighted=='albums'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
-                        <span>Albums</span>
+                    <div className={this.props.optionHighlighted=='videos'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
+                        <span>Videos</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
-                    <div className={this.props.optionHighlighted=='artists'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
-                        <span>Artists</span>
+                    <div className={this.props.optionHighlighted=='settings'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
+                        <span>Settings</span>
+                        <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
+                    </div>
+                    <div className={this.props.optionHighlighted=='about'?`${styles.selected} ${styles.option}`:`${styles.option}`}>
+                        <span>About</span>
                         <FontAwesomeIcon icon={faChevronRight} className={styles['arrow-right']}/>
                     </div>
                 </div>

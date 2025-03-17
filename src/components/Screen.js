@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from '../styles/screen.module.css';
 
-import HomeScreen from './HomeScreen'; // importing screens
-import MusicScreen from './MusicScreen';
+import HomeScreen from './Screens/HomeScreen'; // importing screens
+import MusicScreen from './Screens/MusicScreen';
 
 export default class Screen extends React.Component {
     constructor(props){
@@ -13,6 +13,7 @@ export default class Screen extends React.Component {
         switch(this.props.currentScreen){
             case 'home':
                 screen = <HomeScreen optionHighlighted = {this.props.optionHighlighted}/>;
+                this.props.updateLastVisited("home");
                 break;
             case 'music':
                 screen = <MusicScreen optionHighlighted = { this.props.optionHighlighted } />
